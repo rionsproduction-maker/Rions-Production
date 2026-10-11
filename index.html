@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rions Production</title>
+<style>
+/* ============ VARIABEL TEMA ============ */
+:root{
+  --accent:#a855f7;
+  --accent-2:#6366f1;
+  --accent-3:#ec4899;
+}
+html[data-theme="dark"]{
+  --bg:#0a0a12;
+  --card:rgba(255,255,255,.045);
+  --card-solid:#14141f;
+  --border:rgba(255,255,255,.10);
+  --text:#f5f5f7;
+  --muted:rgba(245,245,247,.55);
+  --link-bg:rgba(255,255,255,.05);
+  --link-bg-hover:rgba(255,255,255,.10);
+  --shadow:0 24px 60px rgba(0,0,0,.55);
+  --orb:.55;
+}
+html[data-theme="light"]{
+  --bg:#eef0f8;
+  --card:rgba(255,255,255,.72);
+  --card-solid:#ffffff;
+  --border:rgba(20,20,43,.08);
+  --text:#14142b;
+  --muted:rgba(20,20,43,.55);
+  --link-bg:rgba(255,255,255,.85);
+  --link-bg-hover:#ffffff;
+  --shadow:0 24px 60px rgba(60,60,130,.14);
+  --orb:.35;
+}
+
+/* ============ DASAR ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:36px 16px 56px;
+  overflow-x:hidden;
+  position:relative;
+  transition:background .4s ease,color .3s ease;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ============ ORB BACKGROUND ============ */
+.orbs{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.orbs span{
+  position:absolute;border-radius:50%;
+  filter:blur(90px);
+  opacity:var(--orb);
+  transition:opacity .4s ease;
+  animation:float 20s ease-in-out infinite;
+}
+.orbs span:nth-child(1){width:380px;height:380px;background:var(--accent);top:-120px;left:-100px}
+.orbs span:nth-child(2){width:340px;height:340px;background:var(--accent-2);bottom:-120px;right:-90px;animation-delay:-7s}
+.orbs span:nth-child(3){width:280px;height:280px;background:var(--accent-3);top:45%;left:60%;animation-delay:-13s}
+
+@keyframes float{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(40px,-50px) scale(1.12)}
+  66%{transform:translate(-35px,35px) scale(.92)}
+}
+
+/* ============ TOMBOL TEMA ============ */
+.theme-toggle{
+  position:fixed;top:20px;right:20px;z-index:20;
+  width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--text);cursor:pointer;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transition:.25s;
+}
+.theme-toggle:hover{transform:rotate(20deg) scale(1.08);border-color:var(--accent)}
+.theme-toggle svg{width:20px;height:20px}
+
+/* ============ KARTU UTAMA ============ */
+.card{
+  position:relative;z-index:1;
+  width:100%;max-width:480px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:28px;
+  padding:38px 24px 26px;
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  box-shadow:var(--shadow);
+  text-align:center;
+  transition:background .4s ease,border-color .4s ease,box-shadow .4s ease;
+}
+
+/* ============ HEADER ============ */
+.head{animation:fadeUp .6s cubic-bezier(.2,.8,.2,1) backwards}
+.avatar-wrap{width:104px;height:104px;margin:0 auto 18px;position:relative}
+.avatar-ring{
+  position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));
+  animation:spin 7s linear infinite;
+  box-shadow:0 0 28px -4px var(--accent);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.avatar{
+  position:absolute;inset:3px;
+  width:calc(100% - 6px);height:calc(100% - 6px);
+  border-radius:50%;object-fit:cover;
+  background:var(--card-solid);
+  display:block;
+}
+.avatar-fallback{
+  display:grid;place-items:center;
+  font-size:38px;font-weight:700;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff;
+}
+
+.name{
+  font-size:22px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  letter-spacing:-.3px;
+}
+.name svg{flex-shrink:0}
+.username{font-size:14px;color:var(--muted);margin-top:3px}
+.bio{font-size:14px;line-height:1.6;color:var(--muted);margin-top:12px;padding:0 8px}
+
+/* ============ SOSIAL ============ */
+.socials{
+  display:flex;justify-content:center;flex-wrap:wrap;
+  gap:10px;margin-top:20px;
+}
+.social{
+  width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--link-bg);
+  border:1px solid var(--border);
+  color:var(--text);
+  transition:.25s cubic-bezier(.4,0,.2,1);
+  animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) backwards;
+}
+.social svg{width:18px;height:18px}
+.social:hover{
+  transform:translateY(-4px) scale(1.1);
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+  box-shadow:0 10px 24px -8px var(--accent);
+}
+
+/* ============ DAFTAR LINK ============ */
+.links{display:flex;flex-direction:column;gap:12px;margin-top:26px}
+.link{
+  position:relative;
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;
+  background:var(--link-bg);
+  border:1px solid var(--border);
+  border-radius:16px;
+  text-decoration:none;color:inherit;
+  text-align:left;
+  overflow:hidden;
+  transition:transform .25s cubic-bezier(.4,0,.2,1),
+             background .25s ease,border-color .25s ease,box-shadow .25s ease;
+  animation:fadeUp .55s cubic-bezier(.2,.8,.2,1) backwards;
+}
+.link::after{
+  content:"";position:absolute;top:0;left:-120%;
+  width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);
+  transition:left .6s ease;
+}
+.link:hover::after{left:130%}
+.link:hover{
+  transform:translateY(-3px);
+  background:var(--link-bg-hover);
+  border-color:var(--accent);
+  box-shadow:0 14px 32px -14px var(--accent);
+}
+.link:active{transform:translateY(-1px) scale(.99)}
+
+.link-icon{
+  flex-shrink:0;width:42px;height:42px;border-radius:12px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff;
+}
+.link-icon svg{width:20px;height:20px}
+
+.link-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.link-title{font-size:15px;font-weight:600;letter-spacing:-.2px}
+.link-sub{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.link-arrow{
+  flex-shrink:0;opacity:.35;
+  transition:transform .25s ease,opacity .25s ease;
+}
+.link-arrow svg{width:18px;height:18px;display:block}
+.link:hover .link-arrow{opacity:1;transform:translate(2px,-2px)}
+
+/* Link unggulan */
+.link.featured{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  border-color:transparent;color:#fff;
+  box-shadow:0 12px 30px -12px var(--accent);
+}
+.link.featured .link-icon{background:rgba(255,255,255,.2)}
+.link.featured .link-sub{color:rgba(255,255,255,.75)}
+.link.featured:hover{box-shadow:0 18px 40px -12px var(--accent)}
+.link.featured .link-arrow{opacity:.8}
+
+/* ============ AKSI BAWAH ============ */
+.actions{margin-top:22px}
+.btn-share{
+  width:100%;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 20px;
+  font-size:14.5px;font-weight:600;font-family:inherit;
+  color:var(--text);
+  background:transparent;
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  cursor:pointer;
+  transition:.25s cubic-bezier(.4,0,.2,1);
+}
+.btn-share svg{width:17px;height:17px}
+.btn-share:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px -12px var(--accent);
+}
+.btn-share:active{transform:translateY(0)}
+
+.footer{
+  font-size:12px;color:var(--muted);
+  margin-top:20px;letter-spacing:.2px;
+}
+
+/* ============ TOAST ============ */
+.toast{
+  position:fixed;left:50%;bottom:34px;z-index:100;
+  transform:translate(-50%,18px);
+  background:var(--card-solid);color:var(--text);
+  border:1px solid var(--border);
+  padding:12px 22px;border-radius:12px;
+  font-size:13.5px;font-weight:500;
+  box-shadow:0 14px 40px rgba(0,0,0,.3);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease,transform .3s ease;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ============ ANIMASI ============ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ============ RESPONSIF ============ */
+@media (max-width:420px){
+  .card{padding:30px 18px 22px;border-radius:24px}
+  .avatar-wrap{width:92px;height:92px}
+  .name{font-size:20px}
+  .link{padding:12px 13px;gap:12px}
+  .link-icon{width:38px;height:38px;border-radius:11px}
+  .link-icon svg{width:18px;height:18px}
+  .theme-toggle{top:14px;right:14px;width:40px;height:40px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<div class="orbs"><span></span><span></span><span></span></div>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Ganti tema"></button>
+
+<main class="card" id="card"></main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   1) KONFIGURASI — ubah bagian ini sesuai data kamu
+   ===================================================================== */
+const CONFIG = {
+  name: "Fardan Annas Kabilah",
+  username: "@_fardan28",
+  bio: "Student & Web developer junior 🚀<br>Hayoooo Kepoooo ya 😝<br>☕🗿",
+  avatar: "https://raw.githubusercontent.com/rionsproduction-maker/Image-link/f5ff49bfe141aca2f4db2ca172d11793c304ebb4/Pemuda%20Berjalan%20dalam%20Cahaya%20Nebula.png",   // kosongkan "" untuk pakai inisial
+  verified: false,
+  footer: "© 2026 Rions Production · Dibuat Oleh Fardan A.K",
+
+  socials: [
+    { name:"Instagram", icon:"instagram", url:"https://instagram.com/_fardan28?cplk=b3J4Mmh5d3J3bnNs" },
+    { name:"TikTok",    icon:"tiktok",    url:"https://www.tiktok.com/@rions.09?is_from_webapp=1&sender_device=pc" },
+    { name:"YouTube",   icon:"youtube",   url:"https://youtube.com/@fakproduction_01?si=D8U3-HfsdlGuwlaf" },
+    { name:"GitHub",    icon:"github",    url:"https://github.com/rionsproduction-maker" },
+    { name:"LinkedIn",  icon:"linkedin",  url:"https://www.linkedin.com/in/fardan-annas-kabilah-62698a442?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
+  ],
+
+  links: [
+    { title:" 🚀Rions Tracker website", subtitle:"Lihat project Rions Tracker", icon:"globe", url:"https://rionstrackermoney.vercel.app/api", featured:true },
+    { title:"📱Rions Tracker Apps",      subtitle:"download versi aplikasi",     icon:"android",  url:"https://www.mediafire.com/file/qvehwc8ur8gil8e/app-release.apk/file" },
+    { title:" 📊My Broker",      subtitle:"Broker Trading (HFM)",     icon:"candlestick",   url:"https://my.hfm.com/id/int/login" },
+  ]
+};
+
+/* =====================================================================
+   2) KUMPULAN IKON SVG
+   ===================================================================== */
+const stroke = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const solid  = (p) => `<svg viewBox="0 0 24 24" fill="currentColor">${p}</svg>`;
+
+const ICONS = {
+  /* Ikon garis */
+  globe: stroke(`<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>`),
+ android: solid(`<path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/>`),
+  bag:   stroke(`<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>`),
+  edit:  stroke(`<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>`),
+  whatsapp: solid(`<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>`),
+
+  candlestick: stroke(`<path d="M3 3v18h18"/><path d="M7 6v3M7 15v3"/><rect x="5" y="9" width="4" height="6" rx="1" fill="currentColor" stroke="none"/><path d="M12 4v4M12 16v3"/><rect x="10" y="8" width="4" height="8" rx="1" fill="currentColor" stroke="none"/><path d="M17 8v2M17 18v3"/><rect x="15" y="10" width="4" height="8" rx="1" fill="currentColor" stroke="none"/>`),
+
+  arrow: stroke(`<path d="M7 17 17 7"/><path d="M7 7h10v10"/>`),
+  share: stroke(`<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98"/><path d="M15.41 6.51L8.59 10.49"/>`),
+  sun:   stroke(`<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>`),
+  moon:  stroke(`<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`),
+
+  /* Ikon brand */
+  instagram: stroke(`<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>`),
+  x: solid(`<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>`),
+  youtube: solid(`<path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.55 15.57V8.43L15.82 12z"/>`),
+  tiktok: solid(`<path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>`),
+  github: solid(`<path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>`),
+  linkedin: solid(`<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>`),
+  whatsapp: solid(`<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>`),
+};
+
+const VERIFIED = `<svg viewBox="0 0 24 24" width="18" height="18" aria-label="Terverifikasi"><circle cx="12" cy="12" r="11" fill="#3b82f6"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+/* =====================================================================
+   3) RENDER HALAMAN
+   ===================================================================== */
+const card = document.getElementById('card');
+
+function render(){
+  const avatarHTML = CONFIG.avatar
+    ? `<img class="avatar" id="avatarImg" src="${CONFIG.avatar}" alt="${CONFIG.name}">`
+    : `<div class="avatar avatar-fallback">${CONFIG.name.charAt(0).toUpperCase()}</div>`;
+
+  card.innerHTML = `
+    <header class="head">
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        ${avatarHTML}
+      </div>
+
+      <h1 class="name">${CONFIG.name}${CONFIG.verified ? VERIFIED : ''}</h1>
+      <p class="username">${CONFIG.username}</p>
+      ${CONFIG.bio ? `<p class="bio">${CONFIG.bio}</p>` : ''}
+
+      <div class="socials">
+        ${CONFIG.socials.map((s,i) => `
+          <a class="social" href="${s.url}" target="_blank" rel="noopener"
+             aria-label="${s.name}" title="${s.name}"
+             style="animation-delay:${120 + i*55}ms">
+            ${ICONS[s.icon] || ICONS.link}
+          </a>`).join('')}
+      </div>
+    </header>
+
+    <div class="links">
+      ${CONFIG.links.map((l,i) => `
+        <a class="link${l.featured ? ' featured' : ''}" href="${l.url}" target="_blank" rel="noopener"
+           style="animation-delay:${220 + i*70}ms">
+          <span class="link-icon">${ICONS[l.icon] || ICONS.link}</span>
+          <span class="link-text">
+            <span class="link-title">${l.title}</span>
+            ${l.subtitle ? `<span class="link-sub">${l.subtitle}</span>` : ''}
+          </span>
+          <span class="link-arrow">${ICONS.arrow}</span>
+        </a>`).join('')}
+    </div>
+
+    <div class="actions">
+      <button class="btn-share" id="shareBtn">
+        ${ICONS.share}<span>Bagikan Halaman Ini</span>
+      </button>
+    </div>
+
+    <p class="footer">${CONFIG.footer}</p>
+  `;
+
+  /* Fallback avatar kalau gambar gagal dimuat */
+  const img = document.getElementById('avatarImg');
+  if (img){
+    img.addEventListener('error', () => {
+      const fallback = document.createElement('div');
+      fallback.className = 'avatar avatar-fallback';
+      fallback.textContent = CONFIG.name.charAt(0).toUpperCase();
+      img.replaceWith(fallback);
+    });
+  }
+
+  document.getElementById('shareBtn').addEventListener('click', sharePage);
+}
+
+/* =====================================================================
+   4) FITUR SHARE
+   ===================================================================== */
+async function sharePage(){
+  const data = {
+    title: CONFIG.name,
+    text: `Cek link-link dari ${CONFIG.name}`,
+    url: location.href
+  };
+  try{
+    if (navigator.share){
+      await navigator.share(data);
+    }else{
+      await navigator.clipboard.writeText(location.href);
+      showToast('✅ Link berhasil disalin!');
+    }
+  }catch(err){
+    if (err.name !== 'AbortError'){
+      /* Fallback terakhir untuk browser lama */
+      const ta = document.createElement('textarea');
+      ta.value = location.href;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); showToast('✅ Link berhasil disalin!'); }
+      catch(e){ showToast('❌ Gagal menyalin link'); }
+      ta.remove();
+    }
+  }
+}
+
+/* =====================================================================
+   5) TOAST NOTIFIKASI
+   ===================================================================== */
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2400);
+}
+
+/* =====================================================================
+   6) TOGGLE TEMA (GELAP / TERANG)
+   ===================================================================== */
+const themeBtn = document.getElementById('themeToggle');
+
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  themeBtn.innerHTML = theme === 'dark' ? ICONS.sun : ICONS.moon;
+  try{ localStorage.setItem('linktree-theme', theme); }catch(e){}
+}
+
+themeBtn.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+/* Muat tema tersimpan, atau ikuti preferensi sistem */
+(function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem('linktree-theme'); }catch(e){}
+  if (!saved){
+    saved = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+  applyTheme(saved);
+})();
+
+/* =====================================================================
+   7) JALANKAN
+   ===================================================================== */
+render();
+</script>
+</body>
+</html>
