@@ -1,4 +1,4 @@
-<h1 align="center">Hai 👋, Saya Rions Production</h1>
+<h1 align="center">Hai 👋, i'm Rions Production</h1>
 <h3 align="center">Perusahaan</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=rionsproduction&label=Profile%20views&color=0e75b6&style=flat" alt="rionsproduction" /> </p>
